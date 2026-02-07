@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔐 ADMIN & SELLER DASHBOARD - MFH STORE</title>
+    <title>🔐 ADMIN DASHBOARD - MFH STORE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&family=Orbitron:wght@400;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --primary: #0066ff;
@@ -22,7 +24,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
         
         body {
@@ -32,7 +34,32 @@
             overflow-x: hidden;
         }
         
-        /* ========== TOP NAVBAR ========== */
+        /* ========== LOADING SCREEN ========== */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+        }
+        
+        .loading-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+        }
+        
+        /* ========== NAVBAR ========== */
         .navbar {
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             padding: 15px 30px;
@@ -102,6 +129,60 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         
+        /* ========== LOGIN PAGE ========== */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark), var(--light));
+        }
+        
+        .login-box {
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .role-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .role-btn {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .role-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+        
         /* ========== SIDEBAR ========== */
         .sidebar {
             width: 280px;
@@ -113,6 +194,11 @@
             overflow-y: auto;
             padding: 25px 0;
             border-right: 1px solid rgba(255,255,255,0.1);
+            display: none;
+        }
+        
+        .sidebar.active {
+            display: block;
         }
         
         .menu-section {
@@ -148,14 +234,8 @@
             color: white;
         }
         
-        .menu-item i {
-            width: 20px;
-            text-align: center;
-        }
-        
         /* ========== MAIN CONTENT ========== */
         .main-content {
-            margin-left: 280px;
             margin-top: 70px;
             padding: 30px;
             min-height: calc(100vh - 70px);
@@ -195,7 +275,6 @@
         .stat-card:hover {
             transform: translateY(-5px);
             border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0,102,255,0.2);
         }
         
         .stat-icon {
@@ -256,10 +335,6 @@
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         
-        tr:hover {
-            background: rgba(255,255,255,0.05);
-        }
-        
         .badge {
             padding: 5px 12px;
             border-radius: 20px;
@@ -285,44 +360,6 @@
             border: 1px solid var(--danger);
         }
         
-        /* ========== FORMS ========== */
-        .form-card {
-            background: rgba(255,255,255,0.03);
-            border-radius: 15px;
-            padding: 30px;
-            border: 1px solid rgba(255,255,255,0.1);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-light);
-            font-weight: 600;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 14px 20px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            color: var(--text);
-            font-size: 1rem;
-            transition: 0.3s;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: rgba(255,255,255,0.08);
-        }
-        
         /* ========== MODALS ========== */
         .modal {
             display: none;
@@ -335,17 +372,10 @@
             justify-content: center;
             align-items: center;
             z-index: 2000;
-            backdrop-filter: blur(5px);
         }
         
         .modal.active {
             display: flex;
-            animation: fadeIn 0.3s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
         
         .modal-content {
@@ -355,120 +385,9 @@
             width: 90%;
             max-width: 500px;
             border: 2px solid var(--primary);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-        
-        /* ========== CHAT AI STYLES ========== */
-        .chat-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 400px;
-            max-width: 90%;
-            z-index: 1000;
-        }
-        
-        .chat-header {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            padding: 15px;
-            border-radius: 15px 15px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-        }
-        
-        .chat-body {
-            background: var(--light);
-            height: 400px;
-            display: flex;
-            flex-direction: column;
-            border-radius: 0 0 15px 15px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .chat-messages {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-        }
-        
-        .chat-input-container {
-            padding: 15px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            gap: 10px;
-        }
-        
-        .message {
-            padding: 10px 15px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            max-width: 80%;
-        }
-        
-        .message.bot {
-            background: rgba(0,102,255,0.2);
-            align-self: flex-start;
-        }
-        
-        .message.user {
-            background: rgba(138,43,226,0.2);
-            align-self: flex-end;
-            margin-left: auto;
-        }
-        
-        /* ========== LOGIN PAGE ========== */
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, var(--dark), var(--light));
-        }
-        
-        .login-box {
-            background: rgba(255,255,255,0.05);
-            padding: 40px;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-        }
-        
-        .role-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-        
-        .role-btn {
-            flex: 1;
-            padding: 15px;
-            text-align: center;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        
-        .role-btn.active {
-            background: var(--primary);
-            color: white;
         }
         
         /* ========== RESPONSIVE ========== */
-        @media (max-width: 1024px) {
-            .sidebar {
-                width: 250px;
-            }
-            .main-content {
-                margin-left: 250px;
-            }
-        }
-        
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
@@ -478,69 +397,39 @@
                 margin-top: 70px;
             }
             .main-content {
-                margin-left: 0;
                 margin-top: 20px;
             }
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-            .chat-container {
-                width: 300px;
-            }
-        }
-        
-        /* ========== SECTION STYLES ========== */
-        .content-section {
-            display: none;
-            animation: slideUp 0.4s;
-        }
-        
-        .content-section.active {
-            display: block;
-        }
-        
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
     </style>
 </head>
 <body>
-    <!-- LOGIN PAGE (Awal) -->
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen">
+        <div class="loading-logo">MFH DASHBOARD</div>
+        <div style="color: var(--primary);">Loading System...</div>
+    </div>
+
+    <!-- LOGIN PAGE -->
     <div id="loginPage" class="login-container">
         <div class="login-box">
             <div style="text-align: center; margin-bottom: 30px;">
                 <h1 style="font-size: 2rem; margin-bottom: 10px; color: var(--primary);">
                     <i class="fas fa-store"></i> MFH STORE
                 </h1>
-                <p style="color: var(--text-light);">Admin & Seller Dashboard</p>
-            </div>
-            
-            <div class="role-selector">
-                <div id="adminRole" class="role-btn active" onclick="selectRole('admin')">
-                    <i class="fas fa-user-shield"></i>
-                    <div>Admin</div>
-                </div>
-                <div id="sellerRole" class="role-btn" onclick="selectRole('seller')">
-                    <i class="fas fa-user-tie"></i>
-                    <div>Seller</div>
-                </div>
+                <p style="color: var(--text-light);">Admin Dashboard System</p>
             </div>
             
             <div class="form-group">
-                <label class="form-label">Username</label>
-                <input type="text" class="form-control" id="loginUsername" placeholder="Masukkan username">
+                <label style="display: block; margin-bottom: 8px; color: var(--text-light);">Username</label>
+                <input type="text" class="form-control" id="loginUsername" placeholder="admin">
             </div>
             
             <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" class="form-control" id="loginPassword" placeholder="Masukkan password">
+                <label style="display: block; margin-bottom: 8px; color: var(--text-light);">Password</label>
+                <input type="password" class="form-control" id="loginPassword" placeholder="••••••••">
             </div>
             
             <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="login()">
@@ -548,15 +437,14 @@
             </button>
             
             <div style="margin-top: 20px; text-align: center; color: var(--text-light); font-size: 0.9rem;">
-                <p>Default Admin: admin / admin123</p>
-                <p>Default Seller: seller1 / seller123</p>
+                <p>Default: admin / admin123</p>
             </div>
         </div>
     </div>
-    
-    <!-- ADMIN DASHBOARD -->
+
+    <!-- ADMIN DASHBOARD (Hidden until login) -->
     <div id="adminDashboard" style="display: none;">
-        <!-- ========== NAVBAR ========== -->
+        <!-- NAVBAR -->
         <div class="navbar">
             <div class="navbar-brand">
                 <i class="fas fa-store"></i>
@@ -577,9 +465,9 @@
                 </button>
             </div>
         </div>
-        
-        <!-- ========== SIDEBAR MENU ========== -->
-        <div class="sidebar">
+
+        <!-- SIDEBAR -->
+        <div class="sidebar" id="sidebar">
             <div class="menu-section">
                 <div class="menu-title">Dashboard</div>
                 <div class="menu-item active" onclick="showSection('dashboard')">
@@ -596,11 +484,7 @@
                 </div>
                 <div class="menu-item" onclick="showModal('addUserModal')">
                     <i class="fas fa-user-plus"></i>
-                    <span>Tambah Seller Baru</span>
-                </div>
-                <div class="menu-item" onclick="showModal('passwordModal')">
-                    <i class="fas fa-key"></i>
-                    <span>Ubah Password Seller</span>
+                    <span>Tambah Seller</span>
                 </div>
             </div>
             
@@ -609,74 +493,35 @@
                 <div class="menu-item" onclick="showSection('orders')">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Semua Order</span>
-                    <span class="badge badge-danger" style="margin-left: auto;">3</span>
                 </div>
                 <div class="menu-item" onclick="showSection('pending')">
                     <i class="fas fa-clock"></i>
                     <span>Order Pending</span>
-                    <span class="badge badge-warning" style="margin-left: auto;">5</span>
-                </div>
-                <div class="menu-item" onclick="showModal('quickOrderModal')">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Buat Order Manual</span>
                 </div>
             </div>
             
             <div class="menu-section">
-                <div class="menu-title">Product Management</div>
-                <div class="menu-item" onclick="showSection('products')">
-                    <i class="fas fa-box"></i>
-                    <span>Produk Digital</span>
-                </div>
-                <div class="menu-item" onclick="showModal('addProductModal')">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Tambah Produk</span>
-                </div>
-            </div>
-            
-            <div class="menu-section">
-                <div class="menu-title">System Settings</div>
+                <div class="menu-title">Settings</div>
                 <div class="menu-item" onclick="showSection('settings')">
                     <i class="fas fa-cog"></i>
-                    <span>Pengaturan Sistem</span>
+                    <span>Pengaturan</span>
                 </div>
                 <div class="menu-item" onclick="showModal('webhookModal')">
                     <i class="fas fa-link"></i>
                     <span>Webstore Integration</span>
                 </div>
-                <div class="menu-item" onclick="showSection('aiSettings')">
-                    <i class="fas fa-robot"></i>
-                    <span>AI Chat Settings</span>
-                </div>
-            </div>
-            
-            <div class="menu-section">
-                <div class="menu-title">Support</div>
-                <div class="menu-item" onclick="window.open('https://wa.me/6281998593873', '_blank')">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>WhatsApp Support</span>
-                </div>
-                <div class="menu-item" onclick="showSection('reports')">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Laporan Penjualan</span>
-                </div>
             </div>
         </div>
-        
-        <!-- ========== MAIN CONTENT AREA ========== -->
+
+        <!-- MAIN CONTENT -->
         <div class="main-content">
             <!-- Dashboard Section -->
-            <div id="dashboardSection" class="content-section active">
+            <div id="dashboardSection" class="content-section" style="display: block;">
                 <div class="content-header">
                     <h1 class="page-title">📊 Dashboard Admin</h1>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn btn-primary" onclick="refreshStats()">
-                            <i class="fas fa-sync-alt"></i> Refresh
-                        </button>
-                        <button class="btn btn-success" onclick="showModal('quickOrderModal')">
-                            <i class="fas fa-plus"></i> Order Manual
-                        </button>
-                    </div>
+                    <button class="btn btn-primary" onclick="refreshStats()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
                 </div>
                 
                 <!-- Stats Cards -->
@@ -685,11 +530,8 @@
                         <div class="stat-icon">
                             <i class="fas fa-users"></i>
                         </div>
-                        <div class="stat-value" id="totalSellers">8</div>
-                        <div class="stat-label">Total Seller Aktif</div>
-                        <div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);">
-                            <i class="fas fa-arrow-up"></i> +2 bulan ini
-                        </div>
+                        <div class="stat-value" id="totalSellers">5</div>
+                        <div class="stat-label">Total Seller</div>
                     </div>
                     
                     <div class="stat-card">
@@ -698,9 +540,6 @@
                         </div>
                         <div class="stat-value" id="totalOrders">142</div>
                         <div class="stat-label">Total Order</div>
-                        <div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);">
-                            <i class="fas fa-arrow-up"></i> 24 order hari ini
-                        </div>
                     </div>
                     
                     <div class="stat-card">
@@ -708,10 +547,7 @@
                             <i class="fas fa-money-bill-wave"></i>
                         </div>
                         <div class="stat-value">Rp 42.5Jt</div>
-                        <div class="stat-label">Revenue Bulan Ini</div>
-                        <div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);">
-                            <i class="fas fa-arrow-up"></i> +15% dari bulan lalu
-                        </div>
+                        <div class="stat-label">Revenue</div>
                     </div>
                     
                     <div class="stat-card">
@@ -719,19 +555,14 @@
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <div class="stat-value">94%</div>
-                        <div class="stat-label">Kepuasan Customer</div>
-                        <div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);">
-                            <i class="fas fa-star"></i> Rating 4.9/5.0
-                        </div>
+                        <div class="stat-label">Kepuasan</div>
                     </div>
                 </div>
                 
                 <!-- Recent Orders -->
                 <div class="data-table">
                     <div class="table-header">
-                        <div>
-                            <i class="fas fa-clock"></i> Order Terbaru
-                        </div>
+                        <div><i class="fas fa-clock"></i> Order Terbaru</div>
                         <button class="btn btn-primary" onclick="showSection('orders')">
                             Lihat Semua
                         </button>
@@ -743,691 +574,89 @@
                                 <th>Order ID</th>
                                 <th>Customer</th>
                                 <th>Produk</th>
-                                <th>Seller</th>
                                 <th>Amount</th>
                                 <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recentOrders">
-                            <tr>
-                                <td>ORD-2025-001</td>
-                                <td>Budi Santoso</td>
-                                <td>Rekening BCA Verified</td>
-                                <td>Seller 1</td>
-                                <td>Rp 350.000</td>
-                                <td><span class="badge badge-success">Completed</span></td>
-                                <td><button class="btn" style="padding: 5px 10px;">Detail</button></td>
-                            </tr>
-                            <tr>
-                                <td>ORD-2025-002</td>
-                                <td>Sari Dewi</td>
-                                <td>E-Wallet DANA</td>
-                                <td>Seller 2</td>
-                                <td>Rp 150.000</td>
-                                <td><span class="badge badge-warning">Pending</span></td>
-                                <td><button class="btn" style="padding: 5px 10px;">Proses</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <!-- Active Sellers -->
-                <div class="data-table">
-                    <div class="table-header">
-                        <div>
-                            <i class="fas fa-user-tie"></i> Seller Aktif
-                        </div>
-                        <button class="btn btn-primary" onclick="showSection('users')">
-                            Kelola Seller
-                        </button>
-                    </div>
-                    
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Shop Name</th>
-                                <th>Phone</th>
-                                <th>Orders</th>
-                                <th>Performance</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="activeSellers">
-                            <tr>
-                                <td>seller1</td>
-                                <td>TOKO DIGITAL 1</td>
-                                <td>08123456789</td>
-                                <td>42</td>
-                                <td><span style="color: var(--success);">Excellent</span></td>
-                                <td><span class="badge badge-success">Aktif</span></td>
-                            </tr>
-                            <tr>
-                                <td>seller2</td>
-                                <td>TOKO DIGITAL 2</td>
-                                <td>08198765432</td>
-                                <td>38</td>
-                                <td><span style="color: var(--success);">Good</span></td>
-                                <td><span class="badge badge-success">Aktif</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <!-- Users Management Section -->
-            <div id="usersSection" class="content-section">
-                <div class="content-header">
-                    <h1 class="page-title">👥 Kelola Seller</h1>
-                    <button class="btn btn-success" onclick="showModal('addUserModal')">
-                        <i class="fas fa-user-plus"></i> Tambah Seller Baru
-                    </button>
-                </div>
-                
-                <div class="data-table">
-                    <div class="table-header">
-                        <div>
-                            <i class="fas fa-list"></i> Daftar Semua Seller
-                        </div>
-                        <div>
-                            <input type="text" class="form-control" placeholder="Cari seller..." style="width: 200px;">
-                        </div>
-                    </div>
-                    
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Username</th>
-                                <th>Shop Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Total Orders</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="allSellers">
-                            <tr>
-                                <td>1</td>
-                                <td>seller1</td>
-                                <td>TOKO DIGITAL 1</td>
-                                <td>08123456789</td>
-                                <td>seller1@mfhstore.id</td>
-                                <td>42</td>
-                                <td><span class="badge badge-success">Aktif</span></td>
-                                <td>
-                                    <button class="btn" style="padding: 5px 10px; margin-right: 5px;">Edit</button>
-                                    <button class="btn btn-danger" style="padding: 5px 10px;">Reset Pass</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>seller2</td>
-                                <td>TOKO DIGITAL 2</td>
-                                <td>08198765432</td>
-                                <td>seller2@mfhstore.id</td>
-                                <td>38</td>
-                                <td><span class="badge badge-success">Aktif</span></td>
-                                <td>
-                                    <button class="btn" style="padding: 5px 10px; margin-right: 5px;">Edit</button>
-                                    <button class="btn btn-danger" style="padding: 5px 10px;">Reset Pass</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <!-- Orders Management Section -->
-            <div id="ordersSection" class="content-section">
-                <div class="content-header">
-                    <h1 class="page-title">📦 Semua Order</h1>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn btn-primary" onclick="filterOrders('all')">All</button>
-                        <button class="btn btn-warning" onclick="filterOrders('pending')">Pending</button>
-                        <button class="btn btn-success" onclick="filterOrders('completed')">Completed</button>
-                    </div>
-                </div>
-                
-                <div class="data-table">
-                    <div class="table-header">
-                        <div>
-                            <i class="fas fa-filter"></i> Filter Order
-                        </div>
-                        <div style="display: flex; gap: 10px;">
-                            <input type="date" class="form-control" style="width: 150px;">
-                            <select class="form-control" style="width: 150px;">
-                                <option>Semua Seller</option>
-                                <option>Seller 1</option>
-                                <option>Seller 2</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Tanggal</th>
-                                <th>Customer</th>
-                                <th>Produk</th>
-                                <th>Seller</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="allOrders">
-                            <tr>
-                                <td>ORD-2025-001</td>
-                                <td>15 Feb 2025</td>
-                                <td>Budi Santoso</td>
-                                <td>Rekening BCA Verified</td>
-                                <td>Seller 1</td>
-                                <td>Rp 350.000</td>
-                                <td><span class="badge badge-success">Completed</span></td>
-                                <td><button class="btn" style="padding: 5px 10px;">Detail</button></td>
-                            </tr>
-                            <tr>
-                                <td>ORD-2025-002</td>
-                                <td>15 Feb 2025</td>
-                                <td>Sari Dewi</td>
-                                <td>E-Wallet DANA</td>
-                                <td>Seller 2</td>
-                                <td>Rp 150.000</td>
-                                <td><span class="badge badge-warning">Pending</span></td>
-                                <td><button class="btn" style="padding: 5px 10px;">Proses</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <!-- Products Management Section -->
-            <div id="productsSection" class="content-section">
-                <div class="content-header">
-                    <h1 class="page-title">📦 Produk Digital</h1>
-                    <button class="btn btn-success" onclick="showModal('addProductModal')">
-                        <i class="fas fa-plus"></i> Tambah Produk
-                    </button>
-                </div>
-                
-                <div class="stats-grid" style="margin-bottom: 30px;">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-box"></i>
-                        </div>
-                        <div class="stat-value">24</div>
-                        <div class="stat-label">Total Produk</div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-fire"></i>
-                        </div>
-                        <div class="stat-value">8</div>
-                        <div class="stat-label">Produk Terlaris</div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-money-bill"></i>
-                        </div>
-                        <div class="stat-value">Rp 350K</div>
-                        <div class="stat-label">Harga Rata-rata</div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-chart-pie"></i>
-                        </div>
-                        <div class="stat-value">96%</div>
-                        <div class="stat-label">Stok Tersedia</div>
-                    </div>
-                </div>
-                
-                <div class="data-table">
-                    <div class="table-header">
-                        <div>
-                            <i class="fas fa-th-list"></i> Daftar Produk
-                        </div>
-                        <div>
-                            <select class="form-control" style="width: 150px;">
-                                <option>Semua Kategori</option>
-                                <option>Rekening Bank</option>
-                                <option>E-Wallet</option>
-                                <option>Crypto</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nama Produk</th>
-                                <th>Kategori</th>
-                                <th>Harga</th>
-                                <th>Stok</th>
-                                <th>Status</th>
-                                <th>Terjual</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="productsList">
-                            <tr>
-                                <td>1</td>
-                                <td>Rekening BCA Verified</td>
-                                <td>Rekening Bank</td>
-                                <td>Rp 350.000</td>
-                                <td>15</td>
-                                <td><span class="badge badge-success">Aktif</span></td>
-                                <td>42</td>
-                                <td>
-                                    <button class="btn" style="padding: 5px 10px; margin-right: 5px;">Edit</button>
-                                    <button class="btn btn-danger" style="padding: 5px 10px;">Hapus</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>E-Wallet DANA</td>
-                                <td>E-Wallet</td>
-                                <td>Rp 150.000</td>
-                                <td>28</td>
-                                <td><span class="badge badge-success">Aktif</span></td>
-                                <td>31</td>
-                                <td>
-                                    <button class="btn" style="padding: 5px 10px; margin-right: 5px;">Edit</button>
-                                    <button class="btn btn-danger" style="padding: 5px 10px;">Hapus</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <!-- Settings Section -->
-            <div id="settingsSection" class="content-section">
-                <div class="content-header">
-                    <h1 class="page-title">⚙️ Pengaturan Sistem</h1>
-                    <button class="btn btn-success" onclick="saveSettings()">
-                        <i class="fas fa-save"></i> Simpan Pengaturan
-                    </button>
-                </div>
-                
-                <div class="form-card">
-                    <div class="form-group">
-                        <label class="form-label">Nama Toko</label>
-                        <input type="text" class="form-control" value="MFH STORE ID">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Slogan Toko</label>
-                        <input type="text" class="form-control" value="AGEN DIGITAL VVIP TERPERCAYA">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Nomor WhatsApp Admin</label>
-                        <input type="text" class="form-control" value="081998593873">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Email Admin</label>
-                        <input type="email" class="form-control" value="admin@mfhstore.id">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">AI Chat Assistant</label>
-                        <select class="form-control" id="aiSetting">
-                            <option value="enabled">Aktif (24/7)</option>
-                            <option value="disabled">Nonaktif</option>
-                        </select>
-                        <small style="color: var(--text-light); display: block; margin-top: 5px;">
-                            AI akan membantu customer saat admin offline
-                        </small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Auto Reply</label>
-                        <select class="form-control">
-                            <option value="enabled">Aktif</option>
-                            <option value="disabled">Nonaktif</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Webhook URL (untuk webstore)</label>
-                        <input type="text" class="form-control" value="https://mfh-vercel-dashboard.vercel.app/api/webhook" readonly>
-                        <small style="color: var(--text-light); display: block; margin-top: 5px;">
-                            Copy URL ini untuk integrasi dengan webstore
-                        </small>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- AI Settings Section -->
-            <div id="aiSettings" class="content-section">
-                <div class="content-header">
-                    <h1 class="page-title">🤖 AI Chat Settings</h1>
-                    <button class="btn btn-success" onclick="saveAISettings()">
-                        <i class="fas fa-save"></i> Simpan Settings
-                    </button>
-                </div>
-                
-                <div class="form-card">
-                    <div class="form-group">
-                        <label class="form-label">Status AI Chat</label>
-                        <select class="form-control" id="aiStatus">
-                            <option value="active">Aktif - AI akan menjawab saat admin offline</option>
-                            <option value="always">Selalu Aktif - AI selalu menjawab pertama</option>
-                            <option value="inactive">Nonaktif - Hanya admin yang menjawab</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Sapaan AI</label>
-                        <textarea class="form-control" rows="3" id="aiGreeting">Halo! Selamat datang di MFH STORE. Saya AI Assistant siap membantu Anda. Ada yang bisa saya bantu?</textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Auto Reply Produk</label>
-                        <textarea class="form-control" rows="3" id="aiProductReply">Untuk informasi produk dan harga, silakan cek di website kami atau hubungi admin langsung di 081998593873</textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Response Time AI (detik)</label>
-                        <input type="number" class="form-control" id="aiResponseTime" value="3" min="1" max="10">
-                        <small style="color: var(--text-light);">Waktu tunggu sebelum AI merespon</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Bahasa AI</label>
-                        <select class="form-control" id="aiLanguage">
-                            <option value="id">Bahasa Indonesia</option>
-                            <option value="en">English</option>
-                            <option value="mix">Campuran</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- ========== CHAT AI WIDGET ========== -->
-        <div class="chat-container" id="chatWidget" style="display: none;">
-            <div class="chat-header" onclick="toggleChat()">
-                <div>
-                    <i class="fas fa-robot"></i> AI Assistant
-                    <span style="font-size: 0.8rem; opacity: 0.8;">(Online)</span>
-                </div>
-                <div>
-                    <i class="fas fa-chevron-down" id="chatToggleIcon"></i>
-                </div>
-            </div>
-            <div class="chat-body" id="chatBody" style="display: none;">
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message bot">
-                        <strong>AI Assistant:</strong> Halo! Saya AI Assistant MFH Store. Ada yang bisa saya bantu?
-                    </div>
-                </div>
-                <div class="chat-input-container">
-                    <input type="text" class="form-control" id="chatInput" placeholder="Ketik pesan..." style="flex: 1;">
-                    <button class="btn btn-primary" onclick="sendMessage()">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- SELLER DASHBOARD -->
-    <div id="sellerDashboard" style="display: none;">
-        <!-- ========== NAVBAR ========== -->
-        <div class="navbar">
-            <div class="navbar-brand">
-                <i class="fas fa-store"></i>
-                <span id="sellerShopName">TOKO DIGITAL 1</span>
-            </div>
-            
-            <div class="navbar-controls">
-                <div class="user-info">
-                    <i class="fas fa-user-tie"></i>
-                    <div>
-                        <div style="font-weight: 700;" id="sellerUsername">Seller 1</div>
-                        <div style="font-size: 0.8rem; color: rgba(255,255,255,0.8);">Seller Dashboard</div>
-                    </div>
-                </div>
-                
-                <button class="btn btn-danger" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </div>
-        </div>
-        
-        <!-- ========== SIDEBAR MENU ========== -->
-        <div class="sidebar">
-            <div class="menu-section">
-                <div class="menu-title">Dashboard</div>
-                <div class="menu-item active" onclick="showSellerSection('sellerDashboard')">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard Seller</span>
-                </div>
-            </div>
-            
-            <div class="menu-section">
-                <div class="menu-title">Order Management</div>
-                <div class="menu-item" onclick="showSellerSection('sellerOrders')">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Order Saya</span>
-                    <span class="badge badge-warning" style="margin-left: auto;" id="sellerPendingCount">5</span>
-                </div>
-                <div class="menu-item" onclick="showModal('sellerCreateOrder')">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>Buat Order Baru</span>
-                </div>
-            </div>
-            
-            <div class="menu-section">
-                <div class="menu-title">Produk</div>
-                <div class="menu-item" onclick="showSellerSection('sellerProducts')">
-                    <i class="fas fa-box"></i>
-                    <span>Daftar Produk</span>
-                </div>
-                <div class="menu-item" onclick="showSellerSection('sellerStock')">
-                    <i class="fas fa-cubes"></i>
-                    <span>Stok Saya</span>
-                </div>
-            </div>
-            
-            <div class="menu-section">
-                <div class="menu-title">Laporan</div>
-                <div class="menu-item" onclick="showSellerSection('sellerReports')">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Laporan Penjualan</span>
-                </div>
-                <div class="menu-item" onclick="showSellerSection('sellerWithdraw')">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <span>Penarikan Komisi</span>
-                </div>
-            </div>
-            
-            <div class="menu-section">
-                <div class="menu-title">Settings</div>
-                <div class="menu-item" onclick="showSellerSection('sellerSettings')">
-                    <i class="fas fa-cog"></i>
-                    <span>Pengaturan Akun</span>
-                </div>
-                <div class="menu-item" onclick="window.open('https://wa.me/6281998593873', '_blank')">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>Contact Admin</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- ========== MAIN CONTENT SELLER ========== -->
-        <div class="main-content">
-            <!-- Seller Dashboard Section -->
-            <div id="sellerDashboardSection" class="content-section active">
-                <div class="content-header">
-                    <h1 class="page-title">📊 Dashboard Seller</h1>
-                    <button class="btn btn-success" onclick="showModal('sellerCreateOrder')">
-                        <i class="fas fa-plus"></i> Buat Order
-                    </button>
-                </div>
-                
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                        <div class="stat-value" id="sellerTotalOrders">42</div>
-                        <div class="stat-label">Total Order</div>
-                        <div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);">
-                            <i class="fas fa-arrow-up"></i> 5 order hari ini
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-money-bill-wave"></i>
-                        </div>
-                        <div class="stat-value" id="sellerRevenue">Rp 8.2Jt</div>
-                        <div class="stat-label">Revenue Bulan Ini</div>
-                        <div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);">
-                            <i class="fas fa-arrow-up"></i> +12% dari bulan lalu
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-wallet"></i>
-                        </div>
-                        <div class="stat-value" id="sellerCommission">Rp 2.1Jt</div>
-                        <div class="stat-label">Komisi Tersedia</div>
-                        <div style="margin-top: 10px; font-size: 0.9rem;">
-                            <button class="btn" style="padding: 5px 10px; font-size: 0.8rem;">Tarik Sekarang</button>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="stat-value">4.8/5</div>
-                        <div class="stat-label">Rating Seller</div>
-                        <div style="margin-top: 10px; font-size: 0.9rem; color: var(--success);">
-                            <i class="fas fa-star"></i> 98% kepuasan
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Recent Orders Seller -->
-                <div class="data-table">
-                    <div class="table-header">
-                        <div>
-                            <i class="fas fa-clock"></i> Order Terbaru
-                        </div>
-                        <button class="btn btn-primary" onclick="showSellerSection('sellerOrders')">
-                            Lihat Semua
-                        </button>
-                    </div>
-                    
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Produk</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="sellerRecentOrders">
-                            <tr>
-                                <td>ORD-2025-001</td>
-                                <td>Budi Santoso</td>
-                                <td>Rekening BCA Verified</td>
-                                <td>Rp 350.000</td>
-                                <td><span class="badge badge-success">Completed</span></td>
-                                <td><button class="btn" style="padding: 5px 10px;">Kirim</button></td>
-                            </tr>
-                            <tr>
-                                <td>ORD-2025-002</td>
-                                <td>Sari Dewi</td>
-                                <td>E-Wallet DANA</td>
-                                <td>Rp 150.000</td>
-                                <td><span class="badge badge-warning">Pending</span></td>
-                                <td><button class="btn" style="padding: 5px 10px;">Proses</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <!-- Product Stock Alert -->
-                <div class="data-table">
-                    <div class="table-header">
-                        <div>
-                            <i class="fas fa-exclamation-triangle"></i> Stok Menipis
-                        </div>
-                        <button class="btn btn-primary" onclick="showSellerSection('sellerStock')">
-                            Kelola Stok
-                        </button>
-                    </div>
-                    
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Produk</th>
-                                <th>Stok Tersedia</th>
-                                <th>Minimum</th>
-                                <th>Status</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Rekening BCA Verified</td>
-                                <td>3</td>
-                                <td>10</td>
-                                <td><span class="badge badge-warning">Menipis</span></td>
-                                <td><button class="btn" style="padding: 5px 10px;">Restok</button></td>
+                                <td>ORD-001</td>
+                                <td>Budi Santoso</td>
+                                <td>Rekening BCA</td>
+                                <td>Rp 350.000</td>
+                                <td><span class="badge badge-success">Completed</span></td>
                             </tr>
                             <tr>
-                                <td>Akun Binance</td>
-                                <td>5</td>
-                                <td>15</td>
-                                <td><span class="badge badge-warning">Menipis</span></td>
-                                <td><button class="btn" style="padding: 5px 10px;">Restok</button></td>
+                                <td>ORD-002</td>
+                                <td>Sari Dewi</td>
+                                <td>E-Wallet DANA</td>
+                                <td>Rp 150.000</td>
+                                <td><span class="badge badge-warning">Pending</span></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            
-            <!-- Seller Orders Section -->
-            <div id="sellerOrdersSection" class="content-section">
+
+            <!-- Users Section -->
+            <div id="usersSection" class="content-section" style="display: none;">
                 <div class="content-header">
-                    <h1 class="page-title">📦 Order Saya</h1>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn btn-primary" onclick="filterSellerOrders('all')">Semua</button>
-                        <button class="btn btn-warning" onclick="filterSellerOrders('pending')">Pending</button>
-                        <button class="btn btn-success" onclick="filterSellerOrders('completed')">Completed</button>
-                    </div>
+                    <h1 class="page-title">👥 Kelola Seller</h1>
+                    <button class="btn btn-success" onclick="showModal('addUserModal')">
+                        <i class="fas fa-user-plus"></i> Tambah Seller
+                    </button>
                 </div>
                 
                 <div class="data-table">
                     <div class="table-header">
+                        <div><i class="fas fa-list"></i> Daftar Seller</div>
+                        <input type="text" class="form-control" placeholder="Cari seller..." style="width: 200px;">
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Shop Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>seller1</td>
+                                <td>TOKO DIGITAL 1</td>
+                                <td>08123456789</td>
+                                <td>seller1@mfhstore.id</td>
+                                <td><span class="badge badge-success">Aktif</span></td>
+                                <td>
+                                    <button class="btn" style="padding: 5px 10px;">Edit</button>
+                                    <button class="btn btn-danger" style="padding: 5px 10px;">Hapus</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Orders Section -->
+            <div id="ordersSection" class="content-section" style="display: none;">
+                <div class="content-header">
+                    <h1 class="page-title">📦 Semua Order</h1>
+                    <button class="btn btn-primary">Export Excel</button>
+                </div>
+                
+                <div class="data-table">
+                    <div class="table-header">
+                        <div><i class="fas fa-filter"></i> Filter Order</div>
                         <div>
-                            <i class="fas fa-filter"></i> Filter Order
-                        </div>
-                        <div style="display: flex; gap: 10px;">
-                            <input type="date" class="form-control" style="width: 150px;">
+                            <input type="date" class="form-control" style="width: 150px; margin-right: 10px;">
                             <select class="form-control" style="width: 150px;">
-                                <option>Semua Produk</option>
-                                <option>Rekening BCA</option>
-                                <option>E-Wallet</option>
+                                <option>Semua Status</option>
+                                <option>Pending</option>
+                                <option>Completed</option>
                             </select>
                         </div>
                     </div>
@@ -1440,490 +669,172 @@
                                 <th>Customer</th>
                                 <th>Produk</th>
                                 <th>Amount</th>
-                                <th>Komisi</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="sellerAllOrders">
+                        <tbody>
                             <tr>
-                                <td>ORD-2025-001</td>
+                                <td>ORD-001</td>
                                 <td>15 Feb 2025</td>
                                 <td>Budi Santoso</td>
-                                <td>Rekening BCA Verified</td>
+                                <td>Rekening BCA</td>
                                 <td>Rp 350.000</td>
-                                <td>Rp 35.000</td>
                                 <td><span class="badge badge-success">Completed</span></td>
-                                <td><button class="btn" style="padding: 5px 10px;">Detail</button></td>
+                                <td><button class="btn">Detail</button></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
-    
-    <!-- ========== MODALS ========== -->
-    
-    <!-- Add User Modal -->
-    <div id="addUserModal" class="modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 20px; color: var(--primary);">
-                <i class="fas fa-user-plus"></i> Tambah Seller Baru
-            </h2>
-            
-            <div class="form-group">
-                <label class="form-label">Username *</label>
-                <input type="text" class="form-control" id="newUsername" placeholder="seller3" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Password *</label>
-                <input type="text" class="form-control" id="newPassword" value="Seller123" required>
-                <small style="color: var(--text-light);">Default: Seller123</small>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Nama Toko *</label>
-                <input type="text" class="form-control" id="newShopName" placeholder="TOKO DIGITAL BARU" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Nomor WhatsApp</label>
-                <input type="text" class="form-control" id="newPhone" placeholder="0812xxxxxxx">
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Email</label>
-                <input type="email" class="form-control" id="newEmail" placeholder="seller@mfhstore.id">
-            </div>
-            
-            <div style="display: flex; gap: 10px; margin-top: 30px;">
-                <button class="btn btn-success" onclick="addNewUser()" style="flex: 1;">
-                    <i class="fas fa-save"></i> Simpan Seller
-                </button>
-                <button class="btn btn-danger" onclick="hideModal('addUserModal')" style="flex: 1;">
-                    <i class="fas fa-times"></i> Batal
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Change Password Modal -->
-    <div id="passwordModal" class="modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 20px; color: var(--primary);">
-                <i class="fas fa-key"></i> Ubah Password Seller
-            </h2>
-            
-            <div class="form-group">
-                <label class="form-label">Pilih Seller</label>
-                <select class="form-control" id="sellerSelect">
-                    <option value="seller1">Seller 1 - TOKO DIGITAL 1</option>
-                    <option value="seller2">Seller 2 - TOKO DIGITAL 2</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Password Baru *</label>
-                <input type="password" class="form-control" id="newPassSeller" placeholder="Password baru (min 8 karakter)">
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Konfirmasi Password Baru *</label>
-                <input type="password" class="form-control" id="confirmPassSeller" placeholder="Ulangi password baru">
-            </div>
-            
-            <div style="margin-top: 20px; padding: 15px; background: rgba(0,102,255,0.1); border-radius: 10px;">
-                <p style="font-size: 0.9rem; margin-bottom: 5px;"><strong>Password harus mengandung:</strong></p>
-                <ul style="font-size: 0.8rem; color: var(--text-light); padding-left: 20px;">
-                    <li>Minimal 8 karakter</li>
-                    <li>Huruf besar dan kecil</li>
-                    <li>Angka</li>
-                </ul>
-            </div>
-            
-            <div style="display: flex; gap: 10px; margin-top: 30px;">
-                <button class="btn btn-success" onclick="changeSellerPassword()" style="flex: 1;">
-                    <i class="fas fa-save"></i> Ubah Password
-                </button>
-                <button class="btn btn-danger" onclick="hideModal('passwordModal')" style="flex: 1;">
-                    <i class="fas fa-times"></i> Batal
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Webhook Integration Modal -->
-    <div id="webhookModal" class="modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 20px; color: var(--primary);">
-                <i class="fas fa-link"></i> Integrasi Webstore
-            </h2>
-            
-            <div class="form-group">
-                <label class="form-label">Webhook URL</label>
-                <input type="text" class="form-control" value="https://mfh-vercel-dashboard.vercel.app/api/webhook" readonly>
-                <button class="btn" onclick="copyToClipboard(this.previousElementSibling)" style="margin-top: 10px; width: 100%;">
-                    <i class="fas fa-copy"></i> Copy URL
-                </button>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">API Key</label>
-                <input type="text" class="form-control" value="mfh_store_2025_secure_key" readonly>
-            </div>
-            
-            <div style="margin: 20px 0; padding: 15px; background: rgba(0,255,170,0.1); border-radius: 10px;">
-                <h4 style="color: var(--success); margin-bottom: 10px;">
-                    <i class="fas fa-info-circle"></i> Cara Integrasi:
-                </h4>
-                <ol style="font-size: 0.9rem; color: var(--text-light); padding-left: 20px;">
-                    <li>Tambahkan script berikut di webstore Anda</li>
-                    <li>Ganti YOUR_STORE_NAME dengan nama toko</li>
-                    <li>Test dengan order pertama</li>
-                </ol>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Script untuk Webstore:</label>
-                <textarea class="form-control" rows="8" readonly style="font-family: monospace; font-size: 0.9rem;">
-<!-- MFH Store Integration -->
-<script>
-const MFH_CONFIG = {
-    api_url: "https://mfh-vercel-dashboard.vercel.app/api/webhook",
-    store_name: "YOUR_STORE_NAME",
-    store_phone: "081998593873",
-    ai_enabled: true,
-    admin_status: "online"
-};
 
-// Function untuk kirim order ke dashboard
-function sendOrderToMFH(orderData) {
-    fetch(MFH_CONFIG.api_url, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            ...orderData,
-            store_name: MFH_CONFIG.store_name,
-            timestamp: new Date().toISOString()
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Order sent to MFH:', data);
-        alert('Order berhasil dikirim ke dashboard!');
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-}
-
-// Function untuk chat AI
-function initializeAIChat() {
-    if (MFH_CONFIG.ai_enabled) {
-        // Implementasi chat AI di sini
-        console.log('AI Chat initialized');
-    }
-}
-
-// Auto send order when checkout
-document.addEventListener('DOMContentLoaded', function() {
-    // Cek apakah ada form checkout
-    const checkoutForm = document.querySelector('form[action*="checkout"]');
-    if (checkoutForm) {
-        checkoutForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const orderData = {
-                customer_name: document.getElementById('customer_name')?.value,
-                customer_phone: document.getElementById('customer_phone')?.value,
-                product: document.getElementById('product')?.value,
-                amount: document.getElementById('amount')?.value
-            };
-            sendOrderToMFH(orderData);
-        });
-    }
-    
-    // Initialize AI Chat jika aktif
-    if (MFH_CONFIG.ai_enabled) {
-        initializeAIChat();
-    }
-});
-
-// WhatsApp button integration
-function openWhatsAppChat() {
-    const message = `Halo, saya ingin bertanya tentang produk di ${MFH_CONFIG.store_name}`;
-    window.open(`https://wa.me/${MFH_CONFIG.store_phone}?text=${encodeURIComponent(message)}`, '_blank');
-}
-</script>
-                </textarea>
-                <button class="btn" onclick="copyToClipboard(this.previousElementSibling)" style="margin-top: 10px; width: 100%;">
-                    <i class="fas fa-copy"></i> Copy Script
-                </button>
-            </div>
-            
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="btn btn-primary" onclick="testWebhook()" style="flex: 1;">
-                    <i class="fas fa-test"></i> Test Connection
-                </button>
-                <button class="btn btn-danger" onclick="hideModal('webhookModal')" style="flex: 1;">
-                    <i class="fas fa-times"></i> Tutup
-                </button>
+            <!-- Settings Section -->
+            <div id="settingsSection" class="content-section" style="display: none;">
+                <div class="content-header">
+                    <h1 class="page-title">⚙️ Pengaturan Sistem</h1>
+                    <button class="btn btn-success" onclick="saveSettings()">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.03); border-radius: 15px; padding: 30px; max-width: 600px;">
+                    <div class="form-group">
+                        <label style="display: block; margin-bottom: 8px; color: var(--text-light);">Nama Toko</label>
+                        <input type="text" class="form-control" value="MFH STORE ID">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="display: block; margin-bottom: 8px; color: var(--text-light);">WhatsApp Admin</label>
+                        <input type="text" class="form-control" value="081998593873">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="display: block; margin-bottom: 8px; color: var(--text-light);">AI Chat Assistant</label>
+                        <select class="form-control">
+                            <option>Aktif (24/7)</option>
+                            <option>Nonaktif</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="display: block; margin-bottom: 8px; color: var(--text-light);">Webhook URL</label>
+                        <input type="text" class="form-control" value="https://mfh-vercel-dashboard.vercel.app/api/webhook" readonly>
+                        <small style="color: var(--text-light);">Untuk integrasi dengan website</small>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Quick Order Modal -->
-    <div id="quickOrderModal" class="modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 20px; color: var(--primary);">
-                <i class="fas fa-plus-circle"></i> Buat Order Manual
-            </h2>
-            
-            <div class="form-group">
-                <label class="form-label">Nama Customer *</label>
-                <input type="text" class="form-control" id="orderCustomer" placeholder="Nama lengkap customer" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Nomor WhatsApp *</label>
-                <input type="text" class="form-control" id="orderPhone" placeholder="0812xxxxxxx" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Produk *</label>
-                <select class="form-control" id="orderProduct" required>
-                    <option value="">Pilih Produk</option>
-                    <option value="rekening_bca">Rekening BCA - Rp 350.000</option>
-                    <option value="dana">E-Wallet DANA - Rp 150.000</option>
-                    <option value="rekening_malaysia">Rekening Malaysia - Rp 400.000</option>
-                    <option value="binance">Akun Binance - Rp 200.000</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Assign ke Seller</label>
-                <select class="form-control" id="orderSeller">
-                    <option value="">Auto Assign</option>
-                    <option value="seller1">Seller 1</option>
-                    <option value="seller2">Seller 2</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Catatan</label>
-                <textarea class="form-control" id="orderNotes" rows="3" placeholder="Catatan tambahan..."></textarea>
-            </div>
-            
-            <div style="display: flex; gap: 10px; margin-top: 30px;">
-                <button class="btn btn-success" onclick="createQuickOrder()" style="flex: 1;">
-                    <i class="fas fa-check-circle"></i> Buat Order
-                </button>
-                <button class="btn btn-danger" onclick="hideModal('quickOrderModal')" style="flex: 1;">
-                    <i class="fas fa-times"></i> Batal
-                </button>
+
+        <!-- MODALS -->
+        <!-- Add User Modal -->
+        <div id="addUserModal" class="modal">
+            <div class="modal-content">
+                <h2 style="margin-bottom: 20px; color: var(--primary);">
+                    <i class="fas fa-user-plus"></i> Tambah Seller Baru
+                </h2>
+                
+                <div class="form-group">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-light);">Username</label>
+                    <input type="text" class="form-control" placeholder="seller3">
+                </div>
+                
+                <div class="form-group">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-light);">Password</label>
+                    <input type="text" class="form-control" value="Seller123">
+                </div>
+                
+                <div class="form-group">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-light);">Nama Toko</label>
+                    <input type="text" class="form-control" placeholder="TOKO DIGITAL BARU">
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 30px;">
+                    <button class="btn btn-success" style="flex: 1;">Simpan</button>
+                    <button class="btn btn-danger" style="flex: 1;" onclick="hideModal('addUserModal')">Batal</button>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Add Product Modal -->
-    <div id="addProductModal" class="modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 20px; color: var(--primary);">
-                <i class="fas fa-plus-circle"></i> Tambah Produk Baru
-            </h2>
-            
-            <div class="form-group">
-                <label class="form-label">Nama Produk *</label>
-                <input type="text" class="form-control" id="productName" placeholder="Rekening BCA Verified" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Kategori *</label>
-                <select class="form-control" id="productCategory" required>
-                    <option value="">Pilih Kategori</option>
-                    <option value="rekening">Rekening Bank</option>
-                    <option value="ewallet">E-Wallet</option>
-                    <option value="crypto">Akun Crypto</option>
-                    <option value="other">Lainnya</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Harga (Rp) *</label>
-                <input type="number" class="form-control" id="productPrice" placeholder="350000" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Stok Awal *</label>
-                <input type="number" class="form-control" id="productStock" placeholder="10" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Deskripsi</label>
-                <textarea class="form-control" id="productDescription" rows="3" placeholder="Deskripsi produk..."></textarea>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Catatan untuk Seller</label>
-                <textarea class="form-control" id="productNotes" rows="2" placeholder="Catatan khusus untuk seller..."></textarea>
-            </div>
-            
-            <div style="display: flex; gap: 10px; margin-top: 30px;">
-                <button class="btn btn-success" onclick="addNewProduct()" style="flex: 1;">
-                    <i class="fas fa-save"></i> Simpan Produk
-                </button>
-                <button class="btn btn-danger" onclick="hideModal('addProductModal')" style="flex: 1;">
-                    <i class="fas fa-times"></i> Batal
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Seller Create Order Modal -->
-    <div id="sellerCreateOrder" class="modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 20px; color: var(--primary);">
-                <i class="fas fa-plus-circle"></i> Buat Order Baru
-            </h2>
-            
-            <div class="form-group">
-                <label class="form-label">Nama Customer *</label>
-                <input type="text" class="form-control" id="sellerOrderCustomer" placeholder="Nama customer" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">WhatsApp Customer *</label>
-                <input type="text" class="form-control" id="sellerOrderPhone" placeholder="0812xxxxxxx" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Pilih Produk *</label>
-                <select class="form-control" id="sellerOrderProduct" required>
-                    <option value="">Pilih Produk</option>
-                    <option value="rekening_bca">Rekening BCA - Rp 350.000</option>
-                    <option value="dana">E-Wallet DANA - Rp 150.000</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Metode Pembayaran</label>
-                <select class="form-control" id="sellerPaymentMethod">
-                    <option value="transfer">Transfer Bank</option>
-                    <option value="qris">QRIS</option>
-                    <option value="cash">Cash</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Catatan Order</label>
-                <textarea class="form-control" id="sellerOrderNotes" rows="3" placeholder="Catatan order..."></textarea>
-            </div>
-            
-            <div style="display: flex; gap: 10px; margin-top: 30px;">
-                <button class="btn btn-success" onclick="createSellerOrder()" style="flex: 1;">
-                    <i class="fas fa-check-circle"></i> Buat Order
-                </button>
-                <button class="btn btn-danger" onclick="hideModal('sellerCreateOrder')" style="flex: 1;">
-                    <i class="fas fa-times"></i> Batal
-                </button>
+
+        <!-- Webhook Modal -->
+        <div id="webhookModal" class="modal">
+            <div class="modal-content">
+                <h2 style="margin-bottom: 20px; color: var(--primary);">
+                    <i class="fas fa-link"></i> Integrasi Webstore
+                </h2>
+                
+                <div class="form-group">
+                    <label style="display: block; margin-bottom: 8px; color: var(--text-light);">Webhook URL</label>
+                    <input type="text" class="form-control" value="https://mfh-vercel-dashboard.vercel.app/api/webhook" readonly>
+                    <button class="btn" onclick="copyToClipboard(this.previousElementSibling)" style="margin-top: 10px; width: 100%;">
+                        <i class="fas fa-copy"></i> Copy URL
+                    </button>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <h4 style="color: var(--primary); margin-bottom: 10px;">Cara Integrasi:</h4>
+                    <ol style="color: var(--text-light);">
+                        <li>Copy URL webhook di atas</li>
+                        <li>Tambahkan ke website Anda</li>
+                        <li>Order akan otomatis masuk ke dashboard</li>
+                    </ol>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 30px;">
+                    <button class="btn btn-danger" style="flex: 1;" onclick="hideModal('webhookModal')">Tutup</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- ========== JAVASCRIPT ========== -->
     <script>
-        // Global Variables
-        let currentUser = null;
-        let currentRole = 'admin';
-        let chatOpen = false;
-        
-        // Sample Data
-        const sampleSellers = [
-            { id: 1, username: 'seller1', shop: 'TOKO DIGITAL 1', phone: '08123456789', email: 'seller1@mfhstore.id', orders: 42, status: 'active' },
-            { id: 2, username: 'seller2', shop: 'TOKO DIGITAL 2', phone: '08198765432', email: 'seller2@mfhstore.id', orders: 38, status: 'active' }
-        ];
-        
-        const sampleOrders = [
-            { id: 'ORD-2025-001', customer: 'Budi Santoso', product: 'Rekening BCA Verified', seller: 'Seller 1', amount: 'Rp 350.000', status: 'completed', date: '15 Feb 2025' },
-            { id: 'ORD-2025-002', customer: 'Sari Dewi', product: 'E-Wallet DANA', seller: 'Seller 2', amount: 'Rp 150.000', status: 'pending', date: '15 Feb 2025' }
-        ];
-        
-        // Login Functions
-        function selectRole(role) {
-            currentRole = role;
-            document.getElementById('adminRole').classList.remove('active');
-            document.getElementById('sellerRole').classList.remove('active');
-            document.getElementById(role + 'Role').classList.add('active');
-        }
-        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide loading screen
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+            }, 1000);
+            
+            // Check if already logged in
+            const token = localStorage.getItem('mfh_admin_token');
+            if (token) {
+                loginSuccess();
+            }
+        });
+
+        // Login function
         function login() {
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
             
-            if (!username || !password) {
-                alert('Username dan password harus diisi!');
-                return;
-            }
-            
-            // Simple authentication
-            if (currentRole === 'admin') {
-                if (username === 'admin' && password === 'admin123') {
-                    currentUser = { username: 'admin', role: 'admin' };
-                    showDashboard();
-                } else {
-                    alert('Login gagal! Username atau password salah.');
-                }
+            if (username === 'admin' && password === 'admin123') {
+                // Simpan token
+                localStorage.setItem('mfh_admin_token', 'admin_logged_in');
+                loginSuccess();
             } else {
-                if (username === 'seller1' && password === 'seller123') {
-                    currentUser = { username: 'seller1', role: 'seller', shop: 'TOKO DIGITAL 1' };
-                    showDashboard();
-                } else if (username === 'seller2' && password === 'seller123') {
-                    currentUser = { username: 'seller2', role: 'seller', shop: 'TOKO DIGITAL 2' };
-                    showDashboard();
-                } else {
-                    alert('Login gagal! Seller tidak ditemukan.');
-                }
+                alert('Login gagal! Username atau password salah.');
             }
         }
-        
-        function showDashboard() {
+
+        function loginSuccess() {
             document.getElementById('loginPage').style.display = 'none';
-            
-            if (currentUser.role === 'admin') {
-                document.getElementById('adminDashboard').style.display = 'block';
-                document.getElementById('sellerDashboard').style.display = 'none';
-                showSection('dashboard');
-                showChatWidget();
-            } else {
-                document.getElementById('sellerDashboard').style.display = 'block';
-                document.getElementById('adminDashboard').style.display = 'none';
-                showSellerSection('sellerDashboard');
-                
-                // Update seller info
-                document.getElementById('sellerShopName').textContent = currentUser.shop;
-                document.getElementById('sellerUsername').textContent = currentUser.username;
-            }
+            document.getElementById('adminDashboard').style.display = 'block';
+            document.getElementById('sidebar').classList.add('active');
+            showSection('dashboard');
         }
-        
+
         function logout() {
-            currentUser = null;
-            document.getElementById('adminDashboard').style.display = 'none';
-            document.getElementById('sellerDashboard').style.display = 'none';
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('loginUsername').value = '';
-            document.getElementById('loginPassword').value = '';
+            localStorage.removeItem('mfh_admin_token');
+            location.reload();
         }
-        
-        // Section Management
+
         function showSection(sectionId) {
             // Hide all sections
             document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
+                section.style.display = 'none';
             });
             
             // Show selected section
-            document.getElementById(sectionId + 'Section').classList.add('active');
+            document.getElementById(sectionId + 'Section').style.display = 'block';
             
             // Update active menu
             document.querySelectorAll('.menu-item').forEach(item => {
@@ -1931,269 +842,38 @@ function openWhatsAppChat() {
             });
             event.target.closest('.menu-item').classList.add('active');
         }
-        
-        function showSellerSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Show selected section
-            document.getElementById(sectionId + 'Section').classList.add('active');
-            
-            // Update active menu
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            event.target.closest('.menu-item').classList.add('active');
-        }
-        
-        // Modal Functions
+
         function showModal(modalId) {
             document.getElementById(modalId).classList.add('active');
         }
-        
+
         function hideModal(modalId) {
             document.getElementById(modalId).classList.remove('active');
         }
-        
-        // User Management
-        function addNewUser() {
-            const username = document.getElementById('newUsername').value;
-            const password = document.getElementById('newPassword').value;
-            const shopName = document.getElementById('newShopName').value;
-            
-            if (!username || !password || !shopName) {
-                alert('Username, password, dan nama toko harus diisi!');
-                return;
-            }
-            
-            alert(`Seller ${username} berhasil ditambahkan!\nToko: ${shopName}\nPassword: ${password}`);
-            hideModal('addUserModal');
-            
-            // Clear form
-            document.getElementById('newUsername').value = '';
-            document.getElementById('newPassword').value = 'Seller123';
-            document.getElementById('newShopName').value = '';
-            document.getElementById('newPhone').value = '';
-            document.getElementById('newEmail').value = '';
-        }
-        
-        function changeSellerPassword() {
-            const seller = document.getElementById('sellerSelect').value;
-            const newPass = document.getElementById('newPassSeller').value;
-            const confirmPass = document.getElementById('confirmPassSeller').value;
-            
-            if (!newPass || !confirmPass) {
-                alert('Password harus diisi!');
-                return;
-            }
-            
-            if (newPass !== confirmPass) {
-                alert('Password tidak cocok!');
-                return;
-            }
-            
-            if (newPass.length < 8) {
-                alert('Password minimal 8 karakter!');
-                return;
-            }
-            
-            alert(`Password untuk ${seller} berhasil diubah!`);
-            hideModal('passwordModal');
-            
-            // Clear form
-            document.getElementById('newPassSeller').value = '';
-            document.getElementById('confirmPassSeller').value = '';
-        }
-        
-        // Order Functions
-        function createQuickOrder() {
-            const customer = document.getElementById('orderCustomer').value;
-            const phone = document.getElementById('orderPhone').value;
-            const product = document.getElementById('orderProduct').value;
-            
-            if (!customer || !phone || !product) {
-                alert('Nama customer, nomor WhatsApp, dan produk harus diisi!');
-                return;
-            }
-            
-            alert(`Order berhasil dibuat untuk ${customer}\nProduk: ${product}\nNomor: ${phone}`);
-            hideModal('quickOrderModal');
-            
-            // Clear form
-            document.getElementById('orderCustomer').value = '';
-            document.getElementById('orderPhone').value = '';
-            document.getElementById('orderProduct').value = '';
-            document.getElementById('orderNotes').value = '';
-        }
-        
-        function createSellerOrder() {
-            const customer = document.getElementById('sellerOrderCustomer').value;
-            const phone = document.getElementById('sellerOrderPhone').value;
-            const product = document.getElementById('sellerOrderProduct').value;
-            
-            if (!customer || !phone || !product) {
-                alert('Nama customer, nomor WhatsApp, dan produk harus diisi!');
-                return;
-            }
-            
-            alert(`Order berhasil dibuat untuk ${customer}\nProduk: ${product}`);
-            hideModal('sellerCreateOrder');
-            
-            // Clear form
-            document.getElementById('sellerOrderCustomer').value = '';
-            document.getElementById('sellerOrderPhone').value = '';
-            document.getElementById('sellerOrderProduct').value = '';
-            document.getElementById('sellerOrderNotes').value = '';
-        }
-        
-        function filterOrders(status) {
-            alert(`Filter order: ${status}`);
-        }
-        
-        function filterSellerOrders(status) {
-            alert(`Filter seller order: ${status}`);
-        }
-        
-        // Product Functions
-        function addNewProduct() {
-            const name = document.getElementById('productName').value;
-            const category = document.getElementById('productCategory').value;
-            const price = document.getElementById('productPrice').value;
-            const stock = document.getElementById('productStock').value;
-            
-            if (!name || !category || !price || !stock) {
-                alert('Semua field bertanda * harus diisi!');
-                return;
-            }
-            
-            alert(`Produk "${name}" berhasil ditambahkan!\nHarga: Rp ${price}\nStok: ${stock}`);
-            hideModal('addProductModal');
-            
-            // Clear form
-            document.getElementById('productName').value = '';
-            document.getElementById('productCategory').value = '';
-            document.getElementById('productPrice').value = '';
-            document.getElementById('productStock').value = '';
-            document.getElementById('productDescription').value = '';
-            document.getElementById('productNotes').value = '';
-        }
-        
-        // Settings Functions
-        function saveSettings() {
-            alert('Pengaturan berhasil disimpan!');
-        }
-        
-        function saveAISettings() {
-            const aiStatus = document.getElementById('aiStatus').value;
-            const greeting = document.getElementById('aiGreeting').value;
-            alert(`AI Settings berhasil disimpan!\nStatus: ${aiStatus}`);
-        }
-        
-        // Webhook Functions
+
         function copyToClipboard(element) {
             element.select();
             element.setSelectionRange(0, 99999);
             document.execCommand('copy');
-            alert('Berhasil disalin ke clipboard!');
+            alert('URL berhasil disalin ke clipboard!');
         }
-        
-        function testWebhook() {
-            alert('Testing connection to webhook...\nConnection successful!');
-        }
-        
-        // Chat AI Functions
-        function showChatWidget() {
-            document.getElementById('chatWidget').style.display = 'block';
-        }
-        
-        function toggleChat() {
-            const chatBody = document.getElementById('chatBody');
-            const icon = document.getElementById('chatToggleIcon');
-            
-            if (chatOpen) {
-                chatBody.style.display = 'none';
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-down');
-            } else {
-                chatBody.style.display = 'flex';
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-up');
-            }
-            
-            chatOpen = !chatOpen;
-        }
-        
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            
-            if (!message) return;
-            
-            // Add user message
-            const messagesDiv = document.getElementById('chatMessages');
-            const userMsg = document.createElement('div');
-            userMsg.className = 'message user';
-            userMsg.innerHTML = `<strong>You:</strong> ${message}`;
-            messagesDiv.appendChild(userMsg);
-            
-            // Clear input
-            input.value = '';
-            
-            // Scroll to bottom
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            
-            // Simulate AI response
-            setTimeout(() => {
-                const aiResponses = [
-                    "Saya AI Assistant MFH Store. Bagaimana saya bisa membantu Anda?",
-                    "Untuk informasi produk dan harga, silakan hubungi admin di 081998593873",
-                    "Apakah Anda ingin membuat order? Silakan hubungi seller terkait.",
-                    "Terima kasih sudah menghubungi MFH Store!"
-                ];
-                const randomResponse = aiResponses[Math.floor(Math.random() * aiResponses.length)];
-                
-                const aiMsg = document.createElement('div');
-                aiMsg.className = 'message bot';
-                aiMsg.innerHTML = `<strong>AI Assistant:</strong> ${randomResponse}`;
-                messagesDiv.appendChild(aiMsg);
-                
-                // Scroll to bottom
-                messagesDiv.scrollTop = messagesDiv.scrollHeight;
-            }, 1000);
-        }
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            // Close modal when clicking outside
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        this.classList.remove('active');
-                    }
-                });
-            });
-            
-            // Enter key for login
-            document.getElementById('loginPassword').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    login();
-                }
-            });
-            
-            // Enter key for chat
-            document.getElementById('chatInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
-            });
-        });
-        
-        // Refresh Stats
+
         function refreshStats() {
             alert('Stats refreshed!');
         }
+
+        function saveSettings() {
+            alert('Pengaturan berhasil disimpan!');
+        }
+
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
