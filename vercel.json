@@ -1,7 +1,13 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/mfh-dashboard.html" },
-    { "source": "/admin", "destination": "/mfh-dashboard.html" },
-    { "source": "/dashboard", "destination": "/mfh-dashboard.html" }
+    { "source": "/(.*)", "destination": "/admin_dashboard.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Content-Type", "value": "text/html" }
+      ]
+    }
   ]
 }
