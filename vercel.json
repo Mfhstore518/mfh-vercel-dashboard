@@ -1,14 +1,7 @@
 {
   "rewrites": [
-    { "source": "/admin", "destination": "/index.html" },
-    { "source": "/dashboard", "destination": "/index.html" }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" }
-      ]
-    }
+    { "source": "/", "destination": "/mfh-dashboard.html" },
+    { "source": "/admin", "destination": "/mfh-dashboard.html" },
+    { "source": "/dashboard", "destination": "/mfh-dashboard.html" }
   ]
 }
