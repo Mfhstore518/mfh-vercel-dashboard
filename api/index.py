@@ -1,17 +1,7 @@
-from http.server import BaseHTTPRequestHandler
-import json
+from complete_system import MFHCompleteHandler as handler
 
-class handler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        if self.path == '/api/ping':
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.send_header('Access-Control-Allow-Origin', '*')
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                "status": "online",
-                "service": "MFH Store API",
-                "timestamp": "2025-02-07T20:00:00Z"
-            }).encode())
-        else:
-            self.send_error(404)
+def main():
+    pass
+
+if __name__ == "__main__":
+    main()
